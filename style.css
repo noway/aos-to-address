@@ -43,6 +43,10 @@ body {
   border-bottom: .05rem solid #e5e5e5;
 }
 
+/* Match bottom margin to upper one */
+#main {
+  margin-bottom: 20px;
+}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 48em) {
