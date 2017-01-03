@@ -112,7 +112,14 @@ class TextBox extends Component {
 	render({ title, ph, value, onInput }) {
 		return (<div class="form-group">
 				<label for={ Util.mangle(title) }>{ title }</label>
-				<input type="text" id={ Util.mangle(title) } class="form-control" placeholder={ ph } value={ value } onInput={ onInput } />
+				<input type="text" 
+					id={ Util.mangle(title) } class="form-control" 
+					placeholder={ ph } value={ value } 
+					onInput={ onInput } 
+					autocomplete="off" 
+					autocorrect="off" 
+					autocapitalize="off" 
+					spellcheck="false" />
 			</div>);
 	}
 }
@@ -121,7 +128,10 @@ class TextBox extends Component {
 class CheckBox extends Component {
 	render({ title, value, disabled, onChange }) {
 		return (<div class="form-group">
-				<label class="checkbox-inline"><input type="checkbox" id={ Util.mangle(title) } checked={ value } disabled={ disabled } onChange={ onChange }/>{ title }</label>
+				<label class="checkbox-inline"><input type="checkbox" 
+					id={ Util.mangle(title) } 
+					checked={ value } disabled={ disabled } 
+					onChange={ onChange }/>{ title }</label>
 			</div>);
 	}
 }

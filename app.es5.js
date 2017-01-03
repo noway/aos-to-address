@@ -180,7 +180,14 @@ var TextBox = function (_Component2) {
 				{ 'for': Util.mangle(title) },
 				title
 			),
-			h('input', { type: 'text', id: Util.mangle(title), 'class': 'form-control', placeholder: ph, value: value, onInput: onInput })
+			h('input', { type: 'text',
+				id: Util.mangle(title), 'class': 'form-control',
+				placeholder: ph, value: value,
+				onInput: onInput,
+				autocomplete: 'off',
+				autocorrect: 'off',
+				autocapitalize: 'off',
+				spellcheck: 'false' })
 		);
 	};
 
@@ -208,7 +215,10 @@ var CheckBox = function (_Component3) {
 			h(
 				'label',
 				{ 'class': 'checkbox-inline' },
-				h('input', { type: 'checkbox', id: Util.mangle(title), checked: value, disabled: disabled, onChange: onChange }),
+				h('input', { type: 'checkbox',
+					id: Util.mangle(title),
+					checked: value, disabled: disabled,
+					onChange: onChange }),
 				title
 			)
 		);
