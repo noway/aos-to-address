@@ -63,7 +63,9 @@ class AppState {
 				addr = ipaddr.parse(match);
 			}
 			catch (e) { return }
-			this._ip = addr.toString();
+			this.lockIPv6 = addr.kind() == 'ipv6' && !addr.isIPv4MappedAddress();
+
+			this._ip = (addr.kind() == 'ipv6' && addr.isIPv4MappedAddress()) ? addr.toIPv4Address().toString() : addr.toString();
 
 		}
 

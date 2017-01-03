@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -63,7 +63,7 @@ var AppState = function () {
 	}
 
 	_createClass(AppState, [{
-		key: "forceIPv6",
+		key: 'forceIPv6',
 		set: function set(bool) {
 			this._forceIPv6 = bool;
 			this.aos = this.aos;
@@ -72,7 +72,7 @@ var AppState = function () {
 			return this._forceIPv6;
 		}
 	}, {
-		key: "aos",
+		key: 'aos',
 		set: function set(str) {
 			this._aos = str;
 			this.lockIPv6 = false;
@@ -95,14 +95,16 @@ var AppState = function () {
 				} catch (e) {
 					return;
 				}
-				this._ip = addr.toString();
+				this.lockIPv6 = addr.kind() == 'ipv6' && !addr.isIPv4MappedAddress();
+
+				this._ip = addr.kind() == 'ipv6' && addr.isIPv4MappedAddress() ? addr.toIPv4Address().toString() : addr.toString();
 			}
 		},
 		get: function get() {
 			return this._aos;
 		}
 	}, {
-		key: "ip",
+		key: 'ip',
 		set: function set(str) {
 			this._ip = str;
 
@@ -144,11 +146,11 @@ var App = function (_Component) {
 		_objectDestructuringEmpty(_ref);
 
 		return h(
-			"form",
-			{ "class": "" },
-			h(TextBox, { title: "AOS address", ph: "aos://16777343", value: aos, onInput: this.linkState('aos') }),
-			h(TextBox, { title: forceIPv6 || lockIPv6 ? 'IPv6' : 'IP', ph: "127.0.0.1", value: ip, onInput: this.linkState('ip') }),
-			h(CheckBox, { title: "Force IPv6 ", value: forceIPv6 || lockIPv6, disabled: lockIPv6, onChange: this.linkState('forceIPv6') })
+			'form',
+			{ 'class': '' },
+			h(TextBox, { title: 'AOS address', ph: 'aos://16777343', value: aos, onInput: this.linkState('aos') }),
+			h(TextBox, { title: forceIPv6 || lockIPv6 ? 'IPv6' : 'IP', ph: '127.0.0.1', value: ip, onInput: this.linkState('ip') }),
+			h(CheckBox, { title: 'Force IPv6 ', value: forceIPv6 || lockIPv6, disabled: lockIPv6, onChange: this.linkState('forceIPv6') })
 		);
 	};
 
@@ -171,14 +173,14 @@ var TextBox = function (_Component2) {
 		    onInput = _ref3.onInput;
 
 		return h(
-			"div",
-			{ "class": "form-group" },
+			'div',
+			{ 'class': 'form-group' },
 			h(
-				"label",
-				{ "for": Util.mangle(title) },
+				'label',
+				{ 'for': Util.mangle(title) },
 				title
 			),
-			h("input", { type: "text", id: Util.mangle(title), "class": "form-control", placeholder: ph, value: value, onInput: onInput })
+			h('input', { type: 'text', id: Util.mangle(title), 'class': 'form-control', placeholder: ph, value: value, onInput: onInput })
 		);
 	};
 
@@ -201,12 +203,12 @@ var CheckBox = function (_Component3) {
 		    onChange = _ref4.onChange;
 
 		return h(
-			"div",
-			{ "class": "form-group" },
+			'div',
+			{ 'class': 'form-group' },
 			h(
-				"label",
-				{ "class": "checkbox-inline" },
-				h("input", { type: "checkbox", id: Util.mangle(title), checked: value, disabled: disabled, onChange: onChange }),
+				'label',
+				{ 'class': 'checkbox-inline' },
+				h('input', { type: 'checkbox', id: Util.mangle(title), checked: value, disabled: disabled, onChange: onChange }),
 				title
 			)
 		);
