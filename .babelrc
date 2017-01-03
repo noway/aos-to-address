@@ -1,1 +1,7 @@
-{ "presets": ["react"] }
+{
+  "sourceMaps": true,
+  "presets": [
+    ["es2015", { "loose":true }],
+    "react"
+  ],
+}
