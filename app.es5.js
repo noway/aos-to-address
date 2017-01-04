@@ -107,6 +107,7 @@ var AppState = function () {
 		key: 'ip',
 		set: function set(str) {
 			this._ip = str;
+			this.lockIPv6 = false;
 
 			var addr = null;
 			try {
@@ -114,6 +115,8 @@ var AppState = function () {
 			} catch (e) {
 				return;
 			}
+
+			this.lockIPv6 = addr.kind() == 'ipv6' && !addr.isIPv4MappedAddress();
 
 			this._aos = "aos://" + Util.LEbytes2int(addr.toByteArray()).toString(10);
 		},
@@ -148,9 +151,21 @@ var App = function (_Component) {
 		return h(
 			'form',
 			{ 'class': '' },
-			h(TextBox, { title: 'AOS address', ph: 'aos://16777343', value: aos, onInput: this.linkState('aos') }),
-			h(TextBox, { title: forceIPv6 || lockIPv6 ? 'IPv6' : 'IP', ph: '127.0.0.1', value: ip, onInput: this.linkState('ip') }),
-			h(CheckBox, { title: 'Force IPv6 ', value: forceIPv6 || lockIPv6, disabled: lockIPv6, onChange: this.linkState('forceIPv6') })
+			h(TextBox, {
+				title: 'AOS address',
+				ph: 'aos://16777343',
+				value: aos,
+				onInput: this.linkState('aos') }),
+			h(TextBox, {
+				title: forceIPv6 || lockIPv6 ? 'IPv6' : 'IP',
+				ph: '127.0.0.1',
+				value: ip,
+				onInput: this.linkState('ip') }),
+			h(CheckBox, {
+				title: 'Force IPv6',
+				value: forceIPv6 || lockIPv6,
+				disabled: lockIPv6,
+				onChange: this.linkState('forceIPv6') })
 		);
 	};
 
@@ -187,7 +202,7 @@ var TextBox = function (_Component2) {
 				autocomplete: 'off',
 				autocorrect: 'off',
 				autocapitalize: 'off',
-				spellcheck: 'false' })
+				spellcheck: false })
 		);
 	};
 

@@ -1,0 +1,24 @@
+{
+  "name": "aos-to-address",
+  "version": "0.0.1",
+  "description": "A tool for converting aos:// URIs to their respective IP addresses Edit",
+  "main": "app.es5.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noway421/aos-to-address.git"
+  },
+  "author": "Way, No <noway@2ch.hk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noway421/aos-to-address/issues"
+  },
+  "homepage": "https://github.com/noway421/aos-to-address#readme"
+}

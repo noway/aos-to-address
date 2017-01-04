@@ -75,12 +75,15 @@ class AppState {
 	}
 	set ip(str) {
 		this._ip = str
+		this.lockIPv6 = false;
 
 		let addr = null;
 		try {
 			addr = ipaddr.parse(str);
 		}
 		catch (e) { return }
+
+		this.lockIPv6 = addr.kind() == 'ipv6' && !addr.isIPv4MappedAddress();
 
 		this._aos =  "aos://" + Util.LEbytes2int(addr.toByteArray()).toString(10)
 	}
@@ -99,9 +102,21 @@ class App extends Component {
 		return (
 
 			<form class="">
-				<TextBox title="AOS address" ph="aos://16777343" value={ aos } onInput={ this.linkState('aos') }/>
-				<TextBox title={ forceIPv6 || lockIPv6 ? 'IPv6' : 'IP' } ph="127.0.0.1" value={ ip } onInput={ this.linkState('ip') }/>
-				<CheckBox title="Force IPv6 " value={ forceIPv6 || lockIPv6 } disabled={ lockIPv6 } onChange={ this.linkState('forceIPv6') }/>
+				<TextBox 
+					title="AOS address" 
+					ph="aos://16777343" 
+					value={ aos } 
+					onInput={ this.linkState('aos') }/>
+				<TextBox 
+					title={ forceIPv6 || lockIPv6 ? 'IPv6' : 'IP' } 
+					ph="127.0.0.1" 
+					value={ ip } 
+					onInput={ this.linkState('ip') }/>
+				<CheckBox 
+					title="Force IPv6" 
+					value={ forceIPv6 || lockIPv6 } 
+					disabled={ lockIPv6 } 
+					onChange={ this.linkState('forceIPv6') }/>
 			</form>
 		);
 	}
@@ -119,7 +134,7 @@ class TextBox extends Component {
 					autocomplete="off" 
 					autocorrect="off" 
 					autocapitalize="off" 
-					spellcheck="false" />
+					spellcheck={ false } />
 			</div>);
 	}
 }
