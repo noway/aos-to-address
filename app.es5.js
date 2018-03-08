@@ -137,8 +137,27 @@ var App = function (_Component) {
 		var _this = _possibleConstructorReturn(this, _Component.call(this));
 
 		_this.state = new AppState();
+		_this.handleClick = _this.handleClick.bind(_this);
 		return _this;
 	}
+
+	App.prototype.handleClick = function handleClick(e) {
+		var _this2 = this;
+
+		e.preventDefault();
+
+		fetch('https://ipinfo.io', {
+			headers: {
+				Accept: 'application/json'
+			}
+		}).then(function (res) {
+			return res.json();
+		}).then(function (json) {
+			_this2.setState({
+				ip: json.ip
+			});
+		});
+	};
 
 	App.prototype.render = function render(_ref, _ref2) {
 		var ip = _ref2.ip,
@@ -160,7 +179,9 @@ var App = function (_Component) {
 				title: forceIPv6 || lockIPv6 ? 'IPv6' : 'IP',
 				ph: '127.0.0.1',
 				value: ip,
-				onInput: this.linkState('ip') }),
+				onInput: this.linkState('ip'),
+				leftButton: 'My IP',
+				onClick: this.handleClick }),
 			h(CheckBox, {
 				title: 'Force IPv6',
 				value: forceIPv6 || lockIPv6,
@@ -185,7 +206,9 @@ var TextBox = function (_Component2) {
 		var title = _ref3.title,
 		    ph = _ref3.ph,
 		    value = _ref3.value,
-		    onInput = _ref3.onInput;
+		    onInput = _ref3.onInput,
+		    leftButton = _ref3.leftButton,
+		    onClick = _ref3.onClick;
 
 		return h(
 			'div',
@@ -195,14 +218,27 @@ var TextBox = function (_Component2) {
 				{ 'for': Util.mangle(title) },
 				title
 			),
-			h('input', { type: 'text',
-				id: Util.mangle(title), 'class': 'form-control',
-				placeholder: ph, value: value,
-				onInput: onInput,
-				autocomplete: 'off',
-				autocorrect: 'off',
-				autocapitalize: 'off',
-				spellcheck: false })
+			h(
+				'div',
+				{ 'class': leftButton ? "input-group" : "" },
+				h('input', { type: 'text',
+					id: Util.mangle(title), 'class': 'form-control',
+					placeholder: ph, value: value,
+					onInput: onInput,
+					autocomplete: 'off',
+					autocorrect: 'off',
+					autocapitalize: 'off',
+					spellcheck: false }),
+				leftButton ? h(
+					'span',
+					{ 'class': 'input-group-btn' },
+					h(
+						'button',
+						{ 'class': 'btn btn-default', type: 'button', onClick: onClick },
+						leftButton
+					)
+				) : h('span', null)
+			)
 		);
 	};
 
@@ -243,4 +279,3 @@ var CheckBox = function (_Component3) {
 }(Component);
 
 render(h(App, null), document.getElementById('main'));
-

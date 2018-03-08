@@ -96,6 +96,21 @@ class App extends Component {
 	constructor() {
         super(); 
 		this.state = new AppState
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick(e) {
+		e.preventDefault();
+
+		fetch('https://ipinfo.io', {
+			headers: {
+				Accept: 'application/json',
+			}
+		}).then((res) => res.json()).then((json) => {
+			this.setState({
+				ip: json.ip,
+			})
+		});
 	}
 
 	render({}, { ip, aos, forceIPv6, lockIPv6 }) {
@@ -111,7 +126,10 @@ class App extends Component {
 					title={ forceIPv6 || lockIPv6 ? 'IPv6' : 'IP' } 
 					ph="127.0.0.1" 
 					value={ ip } 
-					onInput={ this.linkState('ip') }/>
+					onInput={ this.linkState('ip') }
+					leftButton="My IP"
+					onClick={ this.handleClick }/>
+
 				<CheckBox 
 					title="Force IPv6" 
 					value={ forceIPv6 || lockIPv6 } 
@@ -124,17 +142,29 @@ class App extends Component {
 
 
 class TextBox extends Component {
-	render({ title, ph, value, onInput }) {
+	render({ title, ph, value, onInput, leftButton, onClick }) {
 		return (<div class="form-group">
 				<label for={ Util.mangle(title) }>{ title }</label>
-				<input type="text" 
-					id={ Util.mangle(title) } class="form-control" 
-					placeholder={ ph } value={ value } 
-					onInput={ onInput } 
-					autocomplete="off" 
-					autocorrect="off" 
-					autocapitalize="off" 
-					spellcheck={ false } />
+
+				<div class={ leftButton ? "input-group" : ""}>
+					<input type="text"
+						id={ Util.mangle(title) } class="form-control"
+						placeholder={ ph } value={ value }
+						onInput={ onInput }
+						autocomplete="off"
+						autocorrect="off"
+						autocapitalize="off"
+						spellcheck={ false } />
+
+					{
+						leftButton ?
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" onClick={ onClick }>{ leftButton }</button>
+						</span>
+						:
+						<span/>
+					}
+				</div>
 			</div>);
 	}
 }
