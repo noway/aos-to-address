@@ -17,8 +17,8 @@
     "start": "per-env",
     "start:production": "npm run -s serve",
     "start:development": "npm run -s dev",
-    "build": "preact build --template src/template.html --service-worker false",
-    "serve": "preact build --template src/template.html --service-worker false && preact serve --template src/template.html",
+    "build": "preact build --template src/template.html --service-worker false --dest docs",
+    "serve": "preact build --template src/template.html --service-worker false --dest docs && preact serve --template src/template.html",
     "dev": "preact watch --template src/template.html",
     "lint": "eslint src"
   },
