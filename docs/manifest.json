@@ -1,0 +1,16 @@
+{
+  "name": "AOS URI to IP address converter",
+  "short_name": "aos-to-address",
+  "start_url": "/",
+  "display": "browser",
+  "orientation": "portrait",
+  "background_color": "#fff",
+  "theme_color": "#673ab8",
+  "icons": [
+    {
+      "src": "/assets/favicon.png",
+      "type": "image/png",
+      "sizes": "568x640"
+    }
+  ]
+}
