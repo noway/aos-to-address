@@ -1,3 +1,5 @@
 export default (config) => {
-  config.output.publicPath = '/aos-to-address/';
+	if (!config.devServer) {
+		config.output.publicPath = '/aos-to-address/';
+	}
 };
