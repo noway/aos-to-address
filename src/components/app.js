@@ -134,7 +134,7 @@ export default class App extends Component {
 			  </div>
 
 			  <footer class="footer">
-			    <p>&copy; Way, No 2017</p>
+			    <p>&copy; Way, No 2017-2019</p>
 			  </footer>
 			</div>
 		);
