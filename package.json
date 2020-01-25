@@ -16,9 +16,9 @@
   "scripts": {
     "start:production": "npm run -s serve",
     "start:development": "npm run -s dev",
-    "build": "preact build --template src/template.html --service-worker false --dest docs",
-    "serve": "preact build --template src/template.html --service-worker false --dest docs && preact serve --template src/template.html",
-    "dev": "preact watch --template src/template.html",
+    "build": "preact build --no-pwa --no-sw --template src/template.html --service-worker false --dest docs",
+    "serve": "preact build --no-pwa --no-sw --template src/template.html --service-worker false --dest docs && preact serve --template src/template.html",
+    "dev": "preact watch --no-pwa --no-sw --template src/template.html",
     "lint": "eslint src"
   },
   "eslintConfig": {
@@ -36,10 +36,11 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-standard": "^4.0.1",
-    "preact-cli": "^2.2.1"
+    "preact-cli": "^3.0.0-rc.7"
   },
   "dependencies": {
     "eslint-plugin-react-hooks": "^2.3.0",
-    "preact": "^10.2.1"
+    "preact": "^10.2.1",
+    "preact-render-to-string": "^5.1.4"
   }
 }
