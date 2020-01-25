@@ -26,9 +26,6 @@ class Util {
 		}
 		return count;
 	}
-	static mangle(str) {
-		return str.replace(/[^A-Za-z0-9]/g, '-')
-	}
 }
 
 export default function App(props) {
@@ -115,11 +112,13 @@ export default function App(props) {
 		  <div class="jumbotron" id="main">
 				<form class="">
 					<TextBox
+						id="aos-address"
 						title="AOS address"
 						ph="aos://16777343"
 						value={ aos }
 						onInput={(e) => handleSetAos(e.target.value, forceIPv6)}/>
 					<TextBox
+						id="ip"
 						title={ forceIPv6 || lockIPv6 ? 'IPv6' : 'IP' }
 						ph="127.0.0.1"
 						value={ ip }
@@ -128,6 +127,7 @@ export default function App(props) {
 						onClick={ handleClick }/>
 
 					<CheckBox
+						id="force-ipv6"
 						title="Force IPv6"
 						value={ forceIPv6 || lockIPv6 }
 						disabled={ lockIPv6 }
@@ -142,13 +142,13 @@ export default function App(props) {
 	);
 }
 
-function TextBox({ title, ph, value, onInput, leftButton, onClick }) {
+function TextBox({ id, title, ph, value, onInput, leftButton, onClick }) {
 	return (<div class="form-group">
-		<label for={ Util.mangle(title) }>{ title }</label>
-
+		<label for={ id }>{ title }</label>
 		<div class={ leftButton ? "input-group" : ""}>
 			<input type="text"
-				id={ Util.mangle(title) } class="form-control"
+				id={ id }
+				class="form-control"
 				placeholder={ ph } value={ value }
 				onInput={ onInput }
 				autocomplete="off"
@@ -167,11 +167,11 @@ function TextBox({ title, ph, value, onInput, leftButton, onClick }) {
 	</div>);
 }
 
-function CheckBox({ title, value, disabled, onChange }) {
+function CheckBox({ id, title, value, disabled, onChange }) {
 	return (
 		<div class="form-group">
 			<label class="checkbox-inline"><input type="checkbox"
-				id={ Util.mangle(title) }
+				id={ id }
 				checked={ value } disabled={ disabled }
 				onChange={ onChange }/>{ title }
 			</label>
