@@ -1,5 +1,4 @@
 import { h, Component } from 'preact';
-import linkState from 'linkstate';
 
 class Util {
 	static LEbytes2int(b) {
