@@ -34,10 +34,15 @@ export default function App(props) {
 	const [forceIPv6, setForceIPv6] = useState()
 	const [lockIPv6, setLockIPv6] = useState()
 
-	const handleSetForceIPv6 = (forceIPv6) => {
+	const obSetForceIPv6 = (e) => {
+		const forceIPv6 = e.target.checked
 		setForceIPv6(forceIPv6)
 		handleSetAos(aos, forceIPv6)
 	};
+
+	const onSetAos = (e) => {
+		handleSetAos(e.target.value, forceIPv6)
+	}
 
 	const handleSetAos = (str, forceIPv6) => {
 		let aos = str;
@@ -72,7 +77,8 @@ export default function App(props) {
 		setAos(aos)
 	};
 
-	const handleSetIp = (str) => {
+	const onSetIp = (e) => {
+		const str = e.target.value
 		let ip = str;
 		let lockIPv6 = false;
 		let addr = null;
@@ -116,13 +122,13 @@ export default function App(props) {
 						title="AOS address"
 						ph="aos://16777343"
 						value={ aos }
-						onInput={(e) => handleSetAos(e.target.value, forceIPv6)}/>
+						onInput={ onSetAos }/>
 					<TextBox
 						id="ip"
 						title={ forceIPv6 || lockIPv6 ? 'IPv6' : 'IP' }
 						ph="127.0.0.1"
 						value={ ip }
-						onInput={(e) => handleSetIp(e.target.value)}
+						onInput={ onSetIp }
 						leftButton="My IP"
 						onClick={ handleClick }/>
 
@@ -131,7 +137,7 @@ export default function App(props) {
 						title="Force IPv6"
 						value={ forceIPv6 || lockIPv6 }
 						disabled={ lockIPv6 }
-						onChange={(e) => handleSetForceIPv6(e.target.checked)}/>
+						onChange={ obSetForceIPv6 }/>
 				</form>
 		  </div>
 
