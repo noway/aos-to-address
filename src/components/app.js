@@ -71,8 +71,7 @@ export default function App () {
     handleSetAos(e.target.value, forceIPv6)
   }, [forceIPv6, handleSetAos])
 
-  const onSetIp = useCallback((e) => {
-    const str = e.target.value
+  const handleSetIp = useCallback((str) => {
     const ip = str
     let lockIPv6 = false
     let addr = null
@@ -90,13 +89,17 @@ export default function App () {
     setAos(aos)
   }, [])
 
+  const onSetIp = useCallback((e) => {
+    handleSetIp(e.target.value)
+  }, [handleSetIp])
+
   const onSetForceIPv6 = useCallback((e) => {
     const forceIPv6 = e.target.checked
     setForceIPv6(forceIPv6)
     handleSetAos(aos, forceIPv6)
   }, [aos, handleSetAos])
 
-  const handleClick = useCallback((e) => {
+  const onClick = useCallback((e) => {
     e.preventDefault()
 
     fetch('https://ipinfo.io', {
@@ -104,9 +107,9 @@ export default function App () {
         Accept: 'application/json'
       }
     }).then((res) => res.json()).then((json) => {
-      setIp(json.ip)
+      handleSetIp(json.ip)
     })
-  }, [])
+  }, [handleSetIp])
 
   return (
     <div class='container'>
@@ -128,7 +131,7 @@ export default function App () {
             value={ip}
             onInput={onSetIp}
             leftButton='My IP'
-            onClick={handleClick} />
+            onClick={onClick} />
           <CheckBox
             id='force-ipv6'
             title='Force IPv6'
