@@ -142,45 +142,39 @@ export default function App(props) {
 	);
 }
 
-class TextBox extends Component {
-	render({ title, ph, value, onInput, leftButton, onClick }) {
-		return (<div class="form-group">
-			<label for={ Util.mangle(title) }>{ title }</label>
+function TextBox({ title, ph, value, onInput, leftButton, onClick }) {
+	return (<div class="form-group">
+		<label for={ Util.mangle(title) }>{ title }</label>
 
-			<div class={ leftButton ? "input-group" : ""}>
-				<input type="text"
-					id={ Util.mangle(title) } class="form-control"
-					placeholder={ ph } value={ value }
-					onInput={ onInput }
-					autocomplete="off"
-					autocorrect="off"
-					autocapitalize="off"
-					spellcheck={ false } />
-				{
-					leftButton ?
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" onClick={ onClick }>{ leftButton }</button>
-					</span>
-					:
-					<span/>
-				}
-			</div>
-		</div>);
-	}
+		<div class={ leftButton ? "input-group" : ""}>
+			<input type="text"
+				id={ Util.mangle(title) } class="form-control"
+				placeholder={ ph } value={ value }
+				onInput={ onInput }
+				autocomplete="off"
+				autocorrect="off"
+				autocapitalize="off"
+				spellcheck={ false } />
+			{
+				leftButton ?
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" onClick={ onClick }>{ leftButton }</button>
+				</span>
+				:
+				<span/>
+			}
+		</div>
+	</div>);
 }
 
-
-class CheckBox extends Component {
-	render({ title, value, disabled, onChange }) {
-		return (
-			<div class="form-group">
-				<label class="checkbox-inline"><input type="checkbox" 
-					id={ Util.mangle(title) } 
-					checked={ value } disabled={ disabled } 
-					onChange={ onChange }/>{ title }
-				</label>
-			</div>
-		);
-	}
+function CheckBox({ title, value, disabled, onChange }) {
+	return (
+		<div class="form-group">
+			<label class="checkbox-inline"><input type="checkbox"
+				id={ Util.mangle(title) }
+				checked={ value } disabled={ disabled }
+				onChange={ onChange }/>{ title }
+			</label>
+		</div>
+	);
 }
-
