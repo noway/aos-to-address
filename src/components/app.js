@@ -31,7 +31,7 @@ class Util {
   }
 }
 
-export default function App (props) {
+export default function App () {
   const [ip, setIp] = useState()
   const [aos, setAos] = useState()
   const [forceIPv6, setForceIPv6] = useState()
@@ -114,7 +114,7 @@ export default function App (props) {
         <h3 class='text-muted'>AOS ⇔ Address</h3>
       </div>
       <div class='jumbotron' id='main'>
-        <form class=''>
+        <form>
           <TextBox
             id='aos-address'
             title='AOS address'
@@ -138,7 +138,7 @@ export default function App (props) {
         </form>
       </div>
       <footer class='footer'>
-        <p>&copy; Way, No 2017-2019</p>
+        <p>&copy; Way, No 2017-2020</p>
       </footer>
     </div>
   )
@@ -146,7 +146,7 @@ export default function App (props) {
 
 function TextBox ({ id, title, placeholder, value, onInput, leftButton, onClick }) {
   return (<div class='form-group'>
-    <label for={id}>{ title }</label>
+    <label for={id}>{title}</label>
     <div class={leftButton ? 'input-group' : ''}>
       <input type='text'
         id={id}
@@ -161,7 +161,7 @@ function TextBox ({ id, title, placeholder, value, onInput, leftButton, onClick 
       {
         leftButton
           ? <span class='input-group-btn'>
-            <button class='btn btn-default' type='button' onClick={onClick}>{ leftButton }</button>
+            <button class='btn btn-default' type='button' onClick={onClick}>{leftButton}</button>
           </span>
           : null
       }
@@ -175,7 +175,7 @@ function CheckBox ({ id, title, value, disabled, onChange }) {
       <label class='checkbox-inline'><input type='checkbox'
         id={id}
         checked={value} disabled={disabled}
-        onChange={onChange} />{ title }
+        onChange={onChange} />{title}
       </label>
     </div>
   )
