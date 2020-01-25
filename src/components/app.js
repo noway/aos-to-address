@@ -1,6 +1,6 @@
 /* global bigInt, ipaddr */
 import { h } from 'preact'
-import { useState } from 'preact/hooks'
+import { useState, useCallback } from 'preact/hooks'
 
 class Util {
   static LEbytes2int (b) {
@@ -37,17 +37,7 @@ export default function App (props) {
   const [forceIPv6, setForceIPv6] = useState()
   const [lockIPv6, setLockIPv6] = useState()
 
-  const obSetForceIPv6 = (e) => {
-    const forceIPv6 = e.target.checked
-    setForceIPv6(forceIPv6)
-    handleSetAos(aos, forceIPv6)
-  }
-
-  const onSetAos = (e) => {
-    handleSetAos(e.target.value, forceIPv6)
-  }
-
-  const handleSetAos = (str, forceIPv6) => {
+  const handleSetAos = useCallback((str, forceIPv6) => {
     const aos = str
     let lockIPv6 = false
     let ip
@@ -75,9 +65,13 @@ export default function App (props) {
     setLockIPv6(lockIPv6)
     setIp(ip)
     setAos(aos)
-  }
+  }, [])
 
-  const onSetIp = (e) => {
+  const onSetAos = useCallback((e) => {
+    handleSetAos(e.target.value, forceIPv6)
+  }, [forceIPv6, handleSetAos])
+
+  const onSetIp = useCallback((e) => {
     const str = e.target.value
     const ip = str
     let lockIPv6 = false
@@ -94,9 +88,15 @@ export default function App (props) {
     setLockIPv6(lockIPv6)
     setIp(ip)
     setAos(aos)
-  }
+  }, [])
 
-  const handleClick = (e) => {
+  const onSetForceIPv6 = useCallback((e) => {
+    const forceIPv6 = e.target.checked
+    setForceIPv6(forceIPv6)
+    handleSetAos(aos, forceIPv6)
+  }, [aos, handleSetAos])
+
+  const handleClick = useCallback((e) => {
     e.preventDefault()
 
     fetch('https://ipinfo.io', {
@@ -106,7 +106,7 @@ export default function App (props) {
     }).then((res) => res.json()).then((json) => {
       setIp(json.ip)
     })
-  }
+  }, [])
 
   return (
     <div class='container'>
@@ -134,7 +134,7 @@ export default function App (props) {
             title='Force IPv6'
             value={forceIPv6 || lockIPv6}
             disabled={lockIPv6}
-            onChange={obSetForceIPv6} />
+            onChange={onSetForceIPv6} />
         </form>
       </div>
       <footer class='footer'>

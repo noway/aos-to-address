@@ -39,6 +39,7 @@
     "preact-cli": "^2.2.1"
   },
   "dependencies": {
+    "eslint-plugin-react-hooks": "^2.3.0",
     "preact": "^10.2.1"
   }
 }
