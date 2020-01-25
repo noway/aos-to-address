@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { useState } from 'preact/hooks';
 
 class Util {
 	static LEbytes2int(b) {
@@ -30,19 +31,18 @@ class Util {
 	}
 }
 
-export default class App extends Component {
-	constructor() {
-    super();
-		this.handleClick = this.handleClick.bind(this);
-	}
+export default function App(props) {
+	const [ip, setIp] = useState()
+	const [aos, setAos] = useState()
+	const [forceIPv6, setForceIPv6] = useState()
+	const [lockIPv6, setLockIPv6] = useState()
 
-	setForceIPv6 = (forceIPv6) => {
-		this.setState({ forceIPv6 }, () => {
-			this.setAos(this.state.aos)			
-		})
+	const handleSetForceIPv6 = (forceIPv6) => {
+		setForceIPv6(forceIPv6)
+		handleSetAos(aos, forceIPv6)
 	};
 
-	setAos = (str) => {
+	const handleSetAos = (str, forceIPv6) => {
 		let aos = str;
 		let lockIPv6 = false;
 		let ip;
@@ -57,7 +57,7 @@ export default class App extends Component {
 			let int = bigInt(match, 10)
 
 			lockIPv6 = Util.getSigBytesCount(int) > 4;
-			ip = ipaddr.fromByteArray(Util.int2bytesLE(int, this.state.forceIPv6 || lockIPv6 ? 16 : 4)).toString();
+			ip = ipaddr.fromByteArray(Util.int2bytesLE(int, forceIPv6 || lockIPv6 ? 16 : 4)).toString();
 		}
 		else {
 			let addr = null;
@@ -70,10 +70,12 @@ export default class App extends Component {
 			ip = (addr.kind() == 'ipv6' && addr.isIPv4MappedAddress()) ? addr.toIPv4Address().toString() : addr.toString();
 		}
 
-		this.setState({ lockIPv6, ip, aos })
+		setLockIPv6(lockIPv6)
+		setIp(ip)
+		setAos(aos)
 	};
 
-	setIp = (str) => {
+	const handleSetIp = (str) => {
 		let ip = str;
 		let lockIPv6 = false;
 		let addr = null;
@@ -87,10 +89,12 @@ export default class App extends Component {
 
 		let aos =  "aos://" + Util.LEbytes2int(addr.toByteArray()).toString(10)
 
-		this.setState({ lockIPv6, ip, aos })
+		setLockIPv6(lockIPv6)
+		setIp(ip)
+		setAos(aos)
 	};
 
-	handleClick(e) {
+	const handleClick = (e) => {
 		e.preventDefault();
 
 		fetch('https://ipinfo.io', {
@@ -98,48 +102,45 @@ export default class App extends Component {
 				Accept: 'application/json',
 			}
 		}).then((res) => res.json()).then((json) => {
-			this.setIp(json.ip)
+			setIp(json.ip)
 		});
 	}
 
-	render({}, { ip, aos, forceIPv6, lockIPv6 }) {
-		return (
-			<div class="container">
-			  <div class="header clearfix">
-			    <h3 class="text-muted">AOS ⇔ Address</h3>
-			  </div>
+	return (
+		<div class="container">
+		  <div class="header clearfix">
+		    <h3 class="text-muted">AOS ⇔ Address</h3>
+		  </div>
 
-			  <div class="jumbotron" id="main">
-					<form class="">
-						<TextBox 
-							title="AOS address" 
-							ph="aos://16777343" 
-							value={ aos } 
-							onInput={(e) => this.setAos(e.target.value)}/>
-						<TextBox 
-							title={ forceIPv6 || lockIPv6 ? 'IPv6' : 'IP' } 
-							ph="127.0.0.1" 
-							value={ ip } 
-							onInput={(e) => this.setIp(e.target.value)}
-							leftButton="My IP"
-							onClick={ this.handleClick }/>
+		  <div class="jumbotron" id="main">
+				<form class="">
+					<TextBox
+						title="AOS address"
+						ph="aos://16777343"
+						value={ aos }
+						onInput={(e) => handleSetAos(e.target.value, forceIPv6)}/>
+					<TextBox
+						title={ forceIPv6 || lockIPv6 ? 'IPv6' : 'IP' }
+						ph="127.0.0.1"
+						value={ ip }
+						onInput={(e) => handleSetIp(e.target.value)}
+						leftButton="My IP"
+						onClick={ handleClick }/>
 
-						<CheckBox 
-							title="Force IPv6" 
-							value={ forceIPv6 || lockIPv6 } 
-							disabled={ lockIPv6 } 
-							onChange={(e) => this.setForceIPv6(e.target.checked)}/>
-					</form>
-			  </div>
+					<CheckBox
+						title="Force IPv6"
+						value={ forceIPv6 || lockIPv6 }
+						disabled={ lockIPv6 }
+						onChange={(e) => handleSetForceIPv6(e.target.checked)}/>
+				</form>
+		  </div>
 
-			  <footer class="footer">
-			    <p>&copy; Way, No 2017-2019</p>
-			  </footer>
-			</div>
-		);
-	}
+		  <footer class="footer">
+		    <p>&copy; Way, No 2017-2019</p>
+		  </footer>
+		</div>
+	);
 }
-
 
 class TextBox extends Component {
 	render({ title, ph, value, onInput, leftButton, onClick }) {
